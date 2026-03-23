@@ -101,7 +101,7 @@ export class UIBoundary {
         }, 1500);
     }
 
-    submitGuess() {
+submitGuess() {
         if (this.currentInput.length === 0) return;
 
         const result = this.control.processGuess(this.currentInput);
@@ -120,6 +120,11 @@ export class UIBoundary {
             this.playSound(200, 'sawtooth', 0.1);
             this.showMessage(result.message);
             this.triggerShake();
+            
+            // Clears the input field after the 300ms shake animation completes
+            setTimeout(() => {
+                this.clearInput();
+            }, 300);
         }
     }
 
