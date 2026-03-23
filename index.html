@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Serening Bee</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loading-overlay">Loading Dictionaries...</div>
+    <div id="game-container" style="display: none;">
+        <div id="top-bar">
+            <select id="lang-toggle" class="control-btn">
+                <option value="en">English</option>
+                <option value="it">Italian</option>
+            </select>
+            <button id="btn-new-game" class="control-btn">New Game</button>
+        </div>
+
+        <div id="score-board">Score: <span id="score-value">0</span></div>
+        <div id="message-box"></div>
+        <div id="input-display">
+            <span id="current-input"></span><span class="cursor">|</span>
+        </div>
+        
+        <div id="honeycomb">
+            <div class="row">
+                <button class="hex-btn outer" data-letter=""></button>
+                <button class="hex-btn outer" data-letter=""></button>
+            </div>
+            <div class="row">
+                <button class="hex-btn outer" data-letter=""></button>
+                <button class="hex-btn center" data-letter=""></button>
+                <button class="hex-btn outer" data-letter=""></button>
+            </div>
+            <div class="row">
+                <button class="hex-btn outer" data-letter=""></button>
+                <button class="hex-btn outer" data-letter=""></button>
+            </div>
+        </div>
+
+        <div id="controls">
+            <button id="btn-delete" class="control-btn">Delete</button>
+            <button id="btn-shuffle" class="control-btn">Shuffle</button>
+            <button id="btn-enter" class="control-btn">Enter</button>
+        </div>
+
+        <div id="word-list">
+            <h3>Found Words</h3>
+            <ul id="found-words-ul"></ul>
+        </div>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
