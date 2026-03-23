@@ -7,7 +7,7 @@ export class UIBoundary {
         this.bindEvents();
     }
 
-    cacheDOM() {
+cacheDOM() {
         this.loadingOverlay = document.getElementById('loading-overlay');
         this.gameContainer = document.getElementById('game-container');
         this.inputDisplay = document.getElementById('current-input');
@@ -16,16 +16,25 @@ export class UIBoundary {
         this.foundWordsUl = document.getElementById('found-words-ul');
         this.hexButtonsOuter = Array.from(document.querySelectorAll('.hex-btn.outer'));
         this.hexButtonCenter = document.querySelector('.hex-btn.center');
+        
+        // Updated Controls
         this.btnDelete = document.getElementById('btn-delete');
         this.btnShuffle = document.getElementById('btn-shuffle');
         this.btnEnter = document.getElementById('btn-enter');
-        this.inputContainer = document.getElementById('input-display');
+        this.btnHelp = document.getElementById('btn-help');
         
+        // Modal Elements
+        this.rulesModal = document.getElementById('rules-modal');
+        this.btnCloseRules = document.getElementById('btn-close-rules');
+        this.rulesTitle = document.getElementById('rules-title');
+        this.rulesText = document.getElementById('rules-text');
+        
+        this.inputContainer = document.getElementById('input-display');
         this.langToggle = document.getElementById('lang-toggle');
         this.btnNewGame = document.getElementById('btn-new-game');
     }
 
-    bindEvents() {
+bindEvents() {
         const allHexes = [...this.hexButtonsOuter, this.hexButtonCenter];
         allHexes.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -38,6 +47,9 @@ export class UIBoundary {
         this.btnShuffle.addEventListener('click', () => this.shuffleOuterLetters());
         this.btnEnter.addEventListener('click', () => this.submitGuess());
         
+        this.btnHelp.addEventListener('click', () => this.toggleRules(true));
+        this.btnCloseRules.addEventListener('click', () => this.toggleRules(false));
+
         this.langToggle.addEventListener('change', (e) => {
             this.control.setLanguage(e.target.value);
             this.renderGame();
@@ -47,6 +59,8 @@ export class UIBoundary {
             this.control.generateNewPuzzle();
             this.renderGame();
         });
+
+        this.initRules();
     }
 
     renderGame() {
@@ -167,4 +181,41 @@ submitGuess() {
         oscillator.start();
         oscillator.stop(this.audioCtx.currentTime + duration);
     }
+    initRules() {
+        const userLang = navigator.language || navigator.userLanguage;
+        const isItalian = userLang.toLowerCase().startsWith('it');
+
+        if (isItalian) {
+            this.rulesTitle.textContent = "Regole di Serening Bee";
+            this.btnCloseRules.textContent = "Chiudi";
+            this.rulesText.innerHTML = `
+                <li>Le parole devono contenere almeno 4 lettere.</li>
+                <li>Le parole devono includere la lettera centrale.</li>
+                <li>Le lettere possono essere usate più di una volta.</li>
+                <li>Le parole di 4 lettere valgono 1 punto.</li>
+                <li>Le parole più lunghe valgono 1 punto per ogni lettera.</li>
+                <li>I "Pangrammi" usano tutte e 7 le lettere e valgono 7 punti extra.</li>
+            `;
+        } else {
+            this.rulesTitle.textContent = "Serening Bee Rules";
+            this.btnCloseRules.textContent = "Close";
+            this.rulesText.innerHTML = `
+                <li>Words must contain at least 4 letters.</li>
+                <li>Words must include the center letter.</li>
+                <li>Letters can be used more than once.</li>
+                <li>Words with 4 letters are worth 1 point.</li>
+                <li>Longer words earn 1 point per letter.</li>
+                <li>"Pangrams" use all 7 letters and earn 7 extra points.</li>
+            `;
+        }
+    }
+
+    toggleRules(show) {
+        if (show) {
+            this.rulesModal.classList.remove('modal-hidden');
+        } else {
+            this.rulesModal.classList.add('modal-hidden');
+        }
+    }
 }
+
